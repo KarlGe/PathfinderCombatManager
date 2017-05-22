@@ -10,6 +10,11 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
+@import url("../fonts/LeagueGothic/webfonts/stylesheet.css");
+@import url("../fonts/Raleway/webfonts/stylesheet.css");
+*{
+	font-family: "Raleway";
+}
 html {
     color: #222;
     font-size: 1em;
@@ -95,8 +100,61 @@ textarea {
    ========================================================================== */
 
 
-
-
+#combatLog{
+    width: 40em;
+    min-height: 1em;
+    margin: auto;
+    background-color:#eee;
+    padding:1em;
+}
+.participantHeader, .participantBody{
+    padding:0.5em 1em;
+}
+.hero .participantHeader{
+    background-color: #23a8ec; 
+    height:3em;
+}
+.combatParticipant h2, .combatParticipant h3, .combatParticipant h4, .combatParticipant h5{
+    margin: 0;
+    padding: 0 .5em 0 0;
+}
+.hitPointsLabel{
+    background-image: url("../img/heartIcon.png");
+}
+.armorClassLabel{
+    background-image: url("../img/shieldIcon.png");
+}
+.hitPointsLabel, .armorClassLabel{
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: 0px 0px;
+    width:50px;
+    height:50px;
+    padding-top:13px;
+    text-align: center;
+}
+.meleeAttack{
+    background-image: url("../img/sword.png");
+}
+.rangedAttack{
+    background-image: url("../img/arrow.png");
+}
+.meleeAttack, .rangedAttack{
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: -10px 0px;
+    height:20px;
+    padding-top:13px;
+    padding-left:45px;
+    float: left;
+    width:42%;
+}
+.participantHeader > *, .participantHeader .participantLabel{
+    display: inline-block;
+}
+.clearFix{
+    clear: both;
+}
 
 
 

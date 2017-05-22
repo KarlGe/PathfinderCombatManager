@@ -2,6 +2,10 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 var DataClasses = require("./models/DataClasses"); 
+var rivets = require('rivets');
+
+var auction = {name:"SuperAuction"};
+rivets.bind($('#rivetsTest'), {auction: auction})
 /*
 var Datastore = require('nedb')
   , db = {};
