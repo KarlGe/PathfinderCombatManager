@@ -10,34 +10,88 @@
   <body>
     <h1>Hello World!</h1>
     <section id="combatLog">
-      <div class="combatParticipant hero">
-        <div class="participantHeader">
-          <h2>Renestrae</h3>
-          <span class="participantLabel hitPointsLabel">35</span>
-          <span class="participantLabel armorClassLabel">19</span>
-          <span><h4 class="participantLabel">Init:</h4>5</span>
-          <span><h4 class="participantLabel">Ref:</h4>5</span>
-          <span><h4 class="participantLabel">Con:</h4>5</span>
-          <span><h4 class="participantLabel">Will:</h4>5</span>
-        </div>
-        <div class="participantBody">
-          <div class="meleeAttack">
-            <div class="participantWeapon">
-              <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+      <ul>
+        <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy">
+          <div class="participantHeader">
+            <div class="participantName">
+              <h2>{character.name}</h2>
             </div>
-            <div class="participantWeapon">
-              <div><h4>Short Sword: +5 / 1D6+5</h4></div>
-            </div>
-          </div>
-          <div class="rangedAttack">
-              <div class="participantWeapon">
-                <div><h4>Short Bow: +3 / 1d6+2</h4></div>
+            <div class="primaryStats">
+              <div class="participantLabel backgroundImageLabel hitPointsLabel">
+                <div class="removeHP HPHidden">
+                  <span>-5</span>
+                  <span>-1</span>
+                </div>
+                <span class="maxHP HPHidden">{character.maxHP}</span>
+                <span class="currentHP">{character.currentHP}</span>
+                <div class="addHP HPHidden">
+                  <span>+1</span>
+                  <span>+5</span>
+                </div>
               </div>
+              <div class="participantLabel armorClassWrapper">
+                <span class="participantLabel backgroundImageLabel ACLabel">{character.AC}</span>
+                <span class="participantLabel backgroundImageLabel flatFootACLabel">{character.ACFlatFoot}</span>
+                <span class="participantLabel backgroundImageLabel touchACLabel">{character.ACTouch}</span>
+              </div>
+            </div>
+            <div class="secondaryStats">
+              <div class="top">
+                <span><h4 class="inlineBlock">Init:</h4>{character.initiative}</span>
+                <span><h4 class="inlineBlock">Speed:</h4>{character.speed}</span>  
+              </div>
+              <div class="bottom">
+                <span><h4 class="inlineBlock">Ref:</h4>{character.saveReflex}</span>
+                <span><h4 class="inlineBlock">Con:</h4>{character.saveConstitution}</span>
+                <span><h4 class="inlineBlock">Will:</h4>{character.saveWill}</span>
+                <span><h4 class="inlineBlock">CMB:</h4>{character.CMB}</span>
+                <span><h4 class="inlineBlock">CMD:</h4>{character.CMD}</span>
+              </div>
+            </div>
+            <div class="statusEffects">
+              <div class="statusIndicator">
+                <img src="../app/img/hourGlass.png" />
+              </div>
+              <div class="statusEffectsList">
+                <table>
+                  <thead>
+                    <th>Effect Name</th>
+                    <th>Description</th>
+                    <th>Rounds Remaining</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Battle Cry</td>
+                      <td>Increase AC by 2</td>
+                      <td>4</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-          <div class="clearfix"></div>
-        </div>
-        <hr/>
-      </div>
+          <div class="participantBody">
+            <div class="weapons">
+              <div class="weaponHeader"><h3>Weapons</h3><span>[Expand]</span></div>
+              <div class="meleeAttack">
+                <div class="participantWeapon">
+                  <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+                </div>
+                <div class="participantWeapon">
+                  <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+                </div>
+              </div>
+              <div class="rangedAttack">
+                  <div class="participantWeapon">
+                    <div><h4>Short Bow: +3 / 1d6+2</h4></div>
+                  </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <hr/>
+        </li>
+      </ul>
     </section>
   </body>
 

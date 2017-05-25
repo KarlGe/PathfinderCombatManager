@@ -20,7 +20,12 @@ html {
     font-size: 1em;
     line-height: 1.4;
 }
-
+li{
+    list-style: none;
+}
+ul{
+    padding:0;
+}
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
@@ -109,29 +114,151 @@ textarea {
 }
 .participantHeader, .participantBody{
     padding:0.5em 1em;
+    position: relative;
 }
 .hero .participantHeader{
     background-color: #23a8ec; 
+}
+.enemy .participantHeader{
+    background-color: #ec2323; 
+}
+.participantHeader{
+    margin-top: 0.9em;
     height:3em;
+}
+.participantHeader .backgroundImageLabel{
+    background-repeat: no-repeat;
+    background-size: 50px;
+    width:50px;
+    height:50px;
+    padding-top:13px;
+    text-align: center;
+}
+.participantName{
+    margin-top:0.3em!important;
+    width: 9em;
+}
+.participantName h2{
+    width: 6em;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color:#fff;
+}
+.participantName h2:hover{
+    overflow: visible;
+    z-index: 100;
+    width:auto;
+    padding:.2em .5em;
+    margin-top:-.2em;
+    margin-left:-.5em;
+    text-shadow: 1px 2px #222;
+}
+.armorClassWrapper{
+    position: relative;
+    overflow: hidden;
+}
+.hitPointsLabel{
+    background-image: url("../img/heartIcon.png");
+    position: relative;
+}
+.removeHP, .addHP, .maxHP{
+    position: absolute;
+    background-color:#FFF;
+    padding: 0.1em;
+    box-shadow: -1px 2px 2px #000000;
+    display: none;
+}
+.removeHP, .addHP{
+    width:3.5em;
+    top:.6em;
+    z-index: 100;
+}
+.removeHP span:first-child, .addHP span:first-child{
+    padding-right:0.5em;
+    border-right: 1px solid #aaa;
+}
+.removeHP>span:hover, .addHP>span:hover{
+    font-weight: 600;
+    cursor: pointer;
+}
+.maxHP{
+    top:-.8em;
+    width:3em;
+    left:0em;
+}
+.addHP{
+    color: #78ec23;
+    left:2.5em;
+}
+.removeHP{
+    color: #ec2323;
+    left:-3em;
+}
+.ACLabel{
+    background-image: url("../img/shieldIcon.png");
+}
+.flatFootACLabel{
+    background-image: url("../img/footIcon.png");
+    background-position: 1px 0px;
+    position: absolute;
+    top:0;
+    left:2.5em;
+}
+.touchACLabel{
+    background-image: url("../img/touchIcon.png");
+    background-position: 2px -2px;
+    position: absolute;
+    top:0;
+    left:4.8em;
 }
 .combatParticipant h2, .combatParticipant h3, .combatParticipant h4, .combatParticipant h5{
     margin: 0;
     padding: 0 .5em 0 0;
 }
-.hitPointsLabel{
-    background-image: url("../img/heartIcon.png");
+
+.secondaryStats{
+    margin-top:0.2em;
 }
-.armorClassLabel{
-    background-image: url("../img/shieldIcon.png");
+.statusEffectsList{
+    display: none;
+    width:95%;
+    background-color: #424242;
+    color:#FFF;
+    position: absolute;
+    top:4em;
+    padding:1em;
+    left:0;
+    z-index: 100;
+    box-shadow: 0px 0px 4px #000000;
 }
-.hitPointsLabel, .armorClassLabel{
-    background-repeat: no-repeat;
-    background-size: 50px;
-    background-position: 0px 0px;
+.statusEffectsList td, .statusEffectsList th{
+    width: 13em;
+    text-align: left;
+}
+.statusIndicator{
+    position: absolute;
     width:50px;
     height:50px;
-    padding-top:13px;
-    text-align: center;
+    right: 1em;
+    overflow: hidden;
+}
+.statusIndicator img{
+    width:50px;
+    position: absolute;
+    top:-50px;
+    height: auto;
+}
+.weaponHeader > *{
+    display: inline-block;
+}
+.weaponHeader > span{
+    font-size: .7em;
+    margin-top:-.8em;
+}
+.weaponHeader > span:hover{
+    cursor: pointer;
 }
 .meleeAttack{
     background-image: url("../img/sword.png");
@@ -142,15 +269,19 @@ textarea {
 .meleeAttack, .rangedAttack{
     background-repeat: no-repeat;
     background-size: 50px;
-    background-position: -10px 0px;
+    background-position: -10px -15px;
     height:20px;
-    padding-top:13px;
     padding-left:45px;
     float: left;
     width:42%;
+    overflow: hidden;
+}
+.inlineBlock{
+    display: inline-block;
 }
 .participantHeader > *, .participantHeader .participantLabel{
     display: inline-block;
+    vertical-align: top;
 }
 .clearFix{
     clear: both;

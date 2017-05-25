@@ -1,11 +1,38 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-var DataClasses = require("./models/DataClasses"); 
+var Classes = require("./Classes");
 var rivets = require('rivets');
 
-var auction = {name:"SuperAuction"};
-rivets.bind($('#rivetsTest'), {auction: auction})
+
+
+var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/x2", "-", "Piercing")
+var meleeWeapons = [];
+meleeWeapons.push(rapier);
+var character = new Classes.Character("Renestrae",false,35,"Medium",22,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character2 = new Classes.Character("Goblin Warrior",true,35,"Medium",14,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var characters = [character, character2];
+
+
+
+
+$(".hitPointsLabel").hover(function(){
+  $(this).children('.HPHidden').show();
+}, function(){
+  $(this).children('.HPHidden').hide();
+});
+$(function() {
+  rivets.binders.setclass = function(el, value) {
+    if(value === true){
+      $(el).addClass("enemy")
+    }
+    else{
+      $(el).addClass("hero")
+    }
+  }
+  rivets.bind($('.combatParticipant'), {characters: characters});
+
+});
 /*
 var Datastore = require('nedb')
   , db = {};

@@ -1,11 +1,12 @@
-function Weapon(name, cost, dmgS, dmgM, critical, range, weight, type){
+function Weapon(name, dmgSmall, dmgMedium, dmgLarge, dmgBonus, attackBonus, critical, range, ranged, type){
     this.name = name;
-    this.cost = cost;
-    this.dmgM = dmgM;
-    this.dmgS = dmgS;
+    this.dmgSmall = dmgSmall;
+    this.dmgMedium = dmgMedium;
+    this.dmgLarge = dmgLarge;
+    this.dmgBonus = dmgBonus;
+    this.attackBonus = attackBonus;
     this.critical = critical;
     this.range = range;
-    this.weight = weight;
     this.type = type;
 }
 module.exports = Weapon;
