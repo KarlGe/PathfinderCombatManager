@@ -17,22 +17,25 @@
               <h2>{character.name}</h2>
             </div>
             <div class="primaryStats">
-              <div class="participantLabel backgroundImageLabel hitPointsLabel">
-                <div class="removeHP HPHidden">
-                  <span>-5</span>
-                  <span>-1</span>
-                </div>
-                <span class="maxHP HPHidden">{character.maxHP}</span>
+              <div class="participantLabel backgroundImageLabel hitPointsWrapper hoverAble">
                 <span class="currentHP">{character.currentHP}</span>
-                <div class="addHP HPHidden">
-                  <span>+1</span>
-                  <span>+5</span>
-                </div>
+                <span class="hoverBackground hiddenStat">
+                  <div class="removeHP ">
+                    <span>-5</span>
+                    <span>-1</span>
+                  </div>
+                  <span class="maxHP ">{character.currentHP}/{character.maxHP}</span>
+                  <div class="addHP ">
+                    <span>+1</span>
+                    <span>+5</span>
+                  </div>
+                </span>
               </div>
-              <div class="participantLabel armorClassWrapper">
+              <div class="participantLabel armorClassWrapper hoverAble">
                 <span class="participantLabel backgroundImageLabel ACLabel">{character.AC}</span>
-                <span class="participantLabel backgroundImageLabel flatFootACLabel">{character.ACFlatFoot}</span>
-                <span class="participantLabel backgroundImageLabel touchACLabel">{character.ACTouch}</span>
+                <span class="backgroundImageLabel hiddenStat flatFootACLabel">{character.ACFlatFoot}</span>
+                <span class="backgroundImageLabel hiddenStat touchACLabel">{character.ACTouch}</span>
+                <span class="hoverBackground hiddenStat"></span>
               </div>
             </div>
             <div class="secondaryStats">

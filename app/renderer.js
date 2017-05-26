@@ -10,17 +10,11 @@ var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/
 var meleeWeapons = [];
 meleeWeapons.push(rapier);
 var character = new Classes.Character("Renestrae",false,35,"Medium",22,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
-var character2 = new Classes.Character("Goblin Warrior",true,35,"Medium",14,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character2 = new Classes.Character("Goblin Warrior",true,135,"Medium",14,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
 var characters = [character, character2];
 
 
 
-
-$(".hitPointsLabel").hover(function(){
-  $(this).children('.HPHidden').show();
-}, function(){
-  $(this).children('.HPHidden').hide();
-});
 $(function() {
   rivets.binders.setclass = function(el, value) {
     if(value === true){
@@ -32,6 +26,15 @@ $(function() {
   }
   rivets.bind($('.combatParticipant'), {characters: characters});
 
+
+  $(".hoverAble").on({
+      mouseenter: function () {
+        $(this).children('.hiddenStat').stop().fadeIn(100);
+      },
+      mouseleave: function () {
+        $(this).children('.hiddenStat').stop().fadeOut(100);
+      }
+  });
 });
 /*
 var Datastore = require('nedb')
