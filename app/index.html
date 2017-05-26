@@ -4,34 +4,50 @@
     <meta charset="UTF-8">
     <title>Hello Girl!</title>
 
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/main.css">
   </head>
   <body>
     <h1>Hello World!</h1>
+    <a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a>
     <section id="combatLog">
       <ul>
-        <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy">
+        <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy" rv-characterindex="%character%">
+          <div class="reOrder">
+            <div class="reOrderUp glyphicon glyphicon-chevron-up">
+
+            </div>
+            <div class="reOrderDown glyphicon glyphicon-chevron-down">
+              
+            </div>
+          </div>
           <div class="participantHeader">
+            <div class="initiativeOrder hoverable">
+              {character.initiativeOrder}
+              <span class="hoverBackground hiddenStat">
+                {character.initiativeOrder} - {character.initiativeRoll}
+              </span>
+            </div>
             <div class="participantName">
-              <h2>{character.name}</h2>
+              <h2 charactervalue="name">{character.name}</h2>
             </div>
             <div class="primaryStats">
-              <div class="participantLabel backgroundImageLabel hitPointsWrapper hoverAble">
+              <div class="participantLabel backgroundImageLabel hitPointsWrapper hoverable">
                 <span class="currentHP">{character.currentHP}</span>
                 <span class="hoverBackground hiddenStat">
-                  <div class="removeHP ">
+                  <div class="removeHP">
                     <span>-5</span>
                     <span>-1</span>
                   </div>
-                  <span class="maxHP ">{character.currentHP}/{character.maxHP}</span>
-                  <div class="addHP ">
+                  <span class="maxHP">{character.currentHP}/{character.maxHP}</span>
+                  <div class="addHP">
                     <span>+1</span>
                     <span>+5</span>
                   </div>
                 </span>
               </div>
-              <div class="participantLabel armorClassWrapper hoverAble">
+              <div class="participantLabel armorClassWrapper hoverable">
                 <span class="participantLabel backgroundImageLabel ACLabel">{character.AC}</span>
                 <span class="backgroundImageLabel hiddenStat flatFootACLabel">{character.ACFlatFoot}</span>
                 <span class="backgroundImageLabel hiddenStat touchACLabel">{character.ACTouch}</span>
@@ -99,6 +115,9 @@
   </body>
 
   <script>window.$ = window.jQuery = require('jquery');</script>
+  <script>require("bootstrap"); </script>
+  <link href="../node_modules/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+  <script src="../node_modules/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')

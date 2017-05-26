@@ -26,6 +26,15 @@ li{
 ul{
     padding:0;
 }
+body{
+    font-size: 16px;
+}
+h2{
+    font-size: 24px;
+}
+h4{
+    font-size: 16px;
+}
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
@@ -106,25 +115,45 @@ textarea {
 
 
 #combatLog{
-    width: 40em;
+    width: 43em;
     min-height: 1em;
     margin: auto;
+    position: relative;
     background-color:#eee;
     padding:1em;
 }
-.participantHeader, .participantBody{
-    padding:0.5em 1em;
+.combatParticipant{
     position: relative;
 }
-.hero .participantHeader{
+.reOrder{
+    position: absolute;
+    right:-.2em;
+    top:1em;
+}
+.reOrder > div{
+    font-size: 1.5em;
+    display: block;
+    width:1em;
+    height:1em;
+    margin-top:.5em;
+}
+.reOrder > div:hover{
+    cursor: pointer;
+}
+.participantHeader, .participantBody{
+    width:95%;
+    padding:0.2em 1em;
+    position: relative;
+}
+.hero .participantHeader, .hero .initiativeOrder, .hero .initiativeOrder .hoverBackground{
     background-color: #23a8ec; 
 }
-.enemy .participantHeader{
+.enemy .participantHeader, .enemy .initiativeOrder, .enemy .initiativeOrder .hoverBackground{
     background-color: #ec2323; 
 }
 .participantHeader{
     margin-top: 0.9em;
-    height:3em;
+    height:3.5em;
 }
 .participantHeader .backgroundImageLabel{
     background-repeat: no-repeat;
@@ -134,9 +163,29 @@ textarea {
     padding-top:13px;
     text-align: center;
 }
+.initiativeOrder{
+    color: #FFF;
+    font-weight: 600;
+    position: absolute;
+    border:2px solid #FFF;
+    border-radius: 1em;
+    width:1.5em;
+    height:1.5em;
+    text-align: center;
+    top: -.8em;
+    left: -.5em;
+}
+.initiativeOrder .hoverBackground{
+    height:2.5em;
+    width:4em;
+    border-radius: 1em;
+    border:2px solid #FFF;
+    left: 0em;
+    top: -0.2em;
+}
 .participantName{
-    margin-top:0.3em!important;
-    width: 9em;
+    margin-top:0.7em!important;
+    width: 8.5em;
 }
 .participantName h2{
     width: 6em;
@@ -198,6 +247,7 @@ textarea {
     font-size: 0.9em;
     background-image: url("../img/heartIcon.png");
     background-size: 5em;
+    background-position: -.2em 0;
     color: #000;
     top:0.7em;
     left:4.6em;
@@ -224,14 +274,14 @@ textarea {
     padding: 0.5em;
 }
 .hitPointsWrapper .hoverBackground{
-    width:11.6em;
-    height:5em;
+    width:12.5em;
+    height:6em;
     top:-1.5em;
     left:-4.7em;
 }
 .armorClassWrapper .hoverBackground{
-    width:8em;
-    height:3.5em;
+    width:9em;
+    height:4.5em;
     top:-.7em;
     left:-.5em;
 }
@@ -265,6 +315,7 @@ textarea {
 }
 
 .secondaryStats{
+    color: #fff;
     margin-top:0.2em;
 }
 .statusEffectsList{
@@ -316,7 +367,7 @@ textarea {
     background-repeat: no-repeat;
     background-size: 50px;
     background-position: -10px -15px;
-    height:20px;
+    height:1.1em;
     padding-left:45px;
     float: left;
     width:42%;

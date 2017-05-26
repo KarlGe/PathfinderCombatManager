@@ -15,6 +15,8 @@ function Character(name, isEnemy, maxHP, size, AC, ACTouch, baseAttack, strength
     this.wisdom = wisdom;
     this.charisma = charisma;
     this.initiative = initiative;
+    this.initiativeRoll = 0;
+    this.initiativeOrder = 0;
     this.speed = speed;
     this.saveReflex = saveReflex;
     this.saveConstitution = saveConstitution;
