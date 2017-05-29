@@ -117,10 +117,19 @@ textarea {
 #combatLog{
     width: 43em;
     min-height: 1em;
-    margin: auto;
+    margin: 2em auto;
     position: relative;
     background-color:#eee;
     padding:1em;
+}
+#combatLogheader h1, #combatLogheader h2{
+    display: inline-block;
+}
+#roundTimer{
+    font-size: 1.2em;
+}
+#roundCounter{
+    margin-top:0;
 }
 .combatParticipant{
     position: relative;

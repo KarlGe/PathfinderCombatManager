@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="./css/main.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a>
     <section id="combatLog">
+      <div id="combatLogheader">
+        <h1 id="roundCounter">Round {combatInfo.currentRound}</h1>
+        <span id="roundTimer">Time: {combatInfo.currentRound | roundtotime}</span>
+      </div>
       <ul>
         <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy" rv-characterindex="%character%">
           <div class="reOrder">
@@ -111,6 +113,7 @@
           <hr/>
         </li>
       </ul>
+    <button type="button" id="btnEndTurn" class="btn btn-success">End turn</button>
     </section>
   </body>
 

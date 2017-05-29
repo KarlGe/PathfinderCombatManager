@@ -4,6 +4,7 @@
 var Classes = require("./Classes");
 var rivets = require("rivets");
 
+var combatInfo = new Classes.CombatInfo(1, null);
 
 var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/x2", "-", "Piercing")
 var meleeWeapons = [];
@@ -18,57 +19,134 @@ character2.initiativeOrder = 2;
 character3.initiativeRoll = 12;
 character3.initiativeOrder = 3;
 var characters = [character, character2, character3];
+var combatView = null;
 
 
 //Editable success handler
 $.fn.editable.defaults.send = 'never';
 $.fn.editable.defaults.url = function(response, newValue){
-  return newValue;
+  return null;
 }
 $.fn.editable.defaults.success = function(response, newValue){
   var valueToChange = $(this).attr("charactervalue");
-  var index = GetCharacterIndex(this);
+  var index = GetCharacterIndex($(this));
   characters[index][valueToChange] = newValue;
-}
-function AddHP(index, hpToAdd){
-  characters[index].currentHP += parseInt(hpToAdd);
-}
-function GetCharacterIndex(element){
-  return findAncestor(element, "combatParticipant").getAttribute("characterIndex");
-}
-function findAncestor (el, cls) {
-    while ((el = el.parentElement) && !el.classList.contains(cls));
-    return el;
 }
 $(function() {
   rivets.binders.setclass = function(el, value) {
     if(value === true){
-      $(el).addClass("enemy")
+      $(el).removeClass("hero");
+      $(el).addClass("enemy");
     }
     else{
-      $(el).addClass("hero")
+      $(el).removeClass("enemy");
+      $(el).addClass("hero");
     }
   }
-  rivets.bind($('.combatParticipant'), {characters: characters});
+  rivets.formatters.roundtotime = function (value) {
+    time = parseInt(value) * 6 - 6;
+    minutes = Math.floor(time / 60);
+    seconds = time - (minutes * 60);
+	  return pad(minutes, 2) + ":" + pad(seconds, 2);
+  };
+  combatInfo.currentCharacter = characters[0];
+  rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
+  combatView = rivets.bind($('.combatParticipant'), {characters: characters});
   $('.participantName h2').editable({
     type: 'text',
     title: 'Enter name'
   }); 
-  $(".removeHP span").on("click", function(){
-    AddHP(GetCharacterIndex(this), $(this).text());
+  $("#combatLog").on("click", ".removeHP span", function(){
+    AddHP(GetCharacterIndex($(this)), $(this).text());
   });
-  $(".addHP span").on("click", function(){
-    AddHP(GetCharacterIndex(this), $(this).text());
+  $("#combatLog").on("click", ".addHP span", function(){
+    AddHP(GetCharacterIndex($(this)), $(this).text());
   });
-  $(".hoverable").on({
+  $("#combatLog").on("click", ".reOrderUp", function(){
+    MoveCharacterUp($(this));
+  });
+  $("#combatLog").on("click", ".reOrderDown", function(){
+    MoveCharacterDown($(this));
+  });
+  $("#btnEndTurn").click(function(){
+    EndTurn();
+  });
+  $("#combatLog").on({
       mouseenter: function () {
         $(this).children('.hiddenStat').stop().fadeIn(100);
       },
       mouseleave: function () {
         $(this).children('.hiddenStat').stop().fadeOut(100);
       }
-  });
+  }, ".hoverable");
 });
+function pad(num, size) {
+    var s = "000000000" + num;
+    return s.substr(s.length-size);
+}
+function MoveCharacterUp(element){
+  index = GetCharacterIndex(element);
+  newIndex = ShiftIndex(index, -1);
+  characters.move(index, newIndex);
+  ResetInitiativeOrder();
+}
+function MoveCharacterDown(element){
+  index = GetCharacterIndex(element);
+  newIndex = ShiftIndex(index, +1);
+  characters.move(index, newIndex);
+  ResetInitiativeOrder();
+}
+function EndRound(){
+  combatInfo.currentRound ++;
+}
+function EndTurn(){
+  ShiftCharacters();
+  if(combatInfo.currentCharacter.initiativeOrder == characters.length){
+    EndRound();
+  }
+  combatInfo.currentCharacter = characters[0];  
+}
+function ShiftCharacters(){
+  characters.move(0, characters.length-1);
+}
+function ResetInitiativeOrder(){
+  for(i = 0; i < characters.length; i++){
+    characters[i].initiativeOrder = i +1;
+  }
+}
+function AddHP(index, hpToAdd){
+  characters[index].currentHP += parseInt(hpToAdd);
+}
+function GetCharacterIndex(element){
+  return parseInt(element.closest('.combatParticipant').attr("characterIndex"));
+}
+function ShiftIndex(index, shiftAmount){
+  newIndex = parseInt(index) + parseInt(shiftAmount);
+  if(newIndex < 0){
+    newIndex = characters.length - 1;
+  }
+  else if (newIndex >= characters.length){
+    newIndex = 0;
+  }
+  return newIndex;
+}
+Array.prototype.move = function (old_index, new_index) {
+    while (old_index < 0) {
+        old_index += this.length;
+    }
+    while (new_index < 0) {
+        new_index += this.length;
+    }
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};
+
 /*
 var Datastore = require('nedb')
   , db = {};
