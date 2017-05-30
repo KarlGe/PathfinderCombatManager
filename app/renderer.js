@@ -1,17 +1,17 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-var Classes = require("./Classes");
+var Classes = require("./classes");
 var rivets = require("rivets");
 
+var sizes = Classes.Size;
 var combatInfo = new Classes.CombatInfo(1, null);
-
 var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/x2", "-", "Piercing")
 var meleeWeapons = [];
 meleeWeapons.push(rapier);
-var character = new Classes.Character("Renestrae",false,35,"Medium",22,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
-var character2 = new Classes.Character("Goblin Warrior",true,135,"Medium",14,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
-var character3 = new Classes.Character("Velcu",false,35,"Medium",22,14,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character = new Classes.Character.Character("Renestrae",false,35,"Medium",2,0,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character2 = new Classes.Character.Character("Goblin Warrior",true,135,"Medium",4,0,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character3 = new Classes.Character.Character("Velcu",false,35,"Medium",6,2,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
 character.initiativeRoll = 20;
 character.initiativeOrder = 1;
 character2.initiativeRoll = 18;
@@ -31,6 +31,7 @@ $.fn.editable.defaults.success = function(response, newValue){
   var valueToChange = $(this).attr("charactervalue");
   var index = GetCharacterIndex($(this));
   characters[index][valueToChange] = newValue;
+  ActivateEditable();
 }
 $(function() {
   rivets.binders.setclass = function(el, value) {
@@ -52,10 +53,8 @@ $(function() {
   combatInfo.currentCharacter = characters[0];
   rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
   combatView = rivets.bind($('.combatParticipant'), {characters: characters});
-  $('.participantName h2').editable({
-    type: 'text',
-    title: 'Enter name'
-  }); 
+  sizes = rivets.bind($(".sizeList option"), {sizes: sizes})
+  ActivateEditable();
   $("#combatLog").on("click", ".removeHP span", function(){
     AddHP(GetCharacterIndex($(this)), $(this).text());
   });
@@ -71,6 +70,15 @@ $(function() {
   $("#btnEndTurn").click(function(){
     EndTurn();
   });
+  $("#addCharacter").on("change", "#dexterityInput input", function(){
+    NewCharDexUpdate($(this).val());
+  });
+  $("#addCharacter").on("change", ".sizeList", function(){
+    NewCharacterSizeUpdate($("option:selected", this).attr("sizeMod"));
+  });
+  $("#addCharacter").on("change", ".ACContributor", function(){
+    NewCharACUpdate();
+  });
   $("#combatLog").on({
       mouseenter: function () {
         $(this).children('.hiddenStat').stop().fadeIn(100);
@@ -80,6 +88,40 @@ $(function() {
       }
   }, ".hoverable");
 });
+function ActivateEditable(){
+  $(".participantName h2").editable("destroy");
+  $('.participantName h2').editable({
+    type: 'text',
+    title: 'Enter name'
+  }); 
+}
+function NewCharDexUpdate(newValue){
+  var modifier = Classes.Character.CalculateStatBonus(newValue);
+  $("#ACDexBonus").text(modifier);
+  NewCharACUpdate();
+}
+function NewCharacterSizeUpdate(sizeMod){
+  //We reverse it because characters get negative AC for being larger and positive AC for being smaller. Opposite of how the list is defined
+  val = parseInt(sizeMod) * -1; 
+  $("#ACSizeBonus").text(val);
+  NewCharACUpdate();
+}
+function NewCharACUpdate(){
+  ACTotal = 10;
+  $(".ACContributor").each(function(){
+    value = "";
+    if($(this).is("input")){
+      value = $(this).val();
+    }
+    else{
+      value = $(this).text();
+    }
+    if(value != ""){
+      ACTotal += parseInt(value);
+    }
+  })
+  $("#ACTotal").text(ACTotal);
+}
 function pad(num, size) {
     var s = "000000000" + num;
     return s.substr(s.length-size);
@@ -88,12 +130,14 @@ function MoveCharacterUp(element){
   index = GetCharacterIndex(element);
   newIndex = ShiftIndex(index, -1);
   characters.move(index, newIndex);
+  ActivateEditable();
   ResetInitiativeOrder();
 }
 function MoveCharacterDown(element){
   index = GetCharacterIndex(element);
   newIndex = ShiftIndex(index, +1);
   characters.move(index, newIndex);
+  ActivateEditable();
   ResetInitiativeOrder();
 }
 function EndRound(){

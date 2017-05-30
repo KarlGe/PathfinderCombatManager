@@ -112,12 +112,43 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
-
-#combatLog{
+.inlineBlock{
+    display: inline-block;
+}
+#main{
     width: 43em;
-    min-height: 1em;
     margin: 2em auto;
+}
+#addCharacter input{
+    width:8em;
+}
+#addCharacter input[type=number]{
+    width:3em;
+}
+#addCharacter .inlineBlock span{
+    display: block;
+    text-align: center;
+}
+#ACInput label{
+    display: block!important;
+}
+#ACInput{
+    width:16em;
+    font-size: 1.3em;
+}
+#ACInput label{
+    margin-bottom: -.5em;
+}
+#ACInput label, #ACInput input{
+    font-size: 16px;
+}
+#ACTotal{
+    width: 2em;
+    text-align: left!important;
+    display: inline-block!important;
+}
+#combatLog{
+    min-height: 1em;
     position: relative;
     background-color:#eee;
     padding:1em;

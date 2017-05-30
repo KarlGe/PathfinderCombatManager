@@ -9,112 +9,232 @@
     <link rel="stylesheet" href="./css/main.css">
   </head>
   <body>
-    <section id="combatLog">
-      <div id="combatLogheader">
-        <h1 id="roundCounter">Round {combatInfo.currentRound}</h1>
-        <span id="roundTimer">Time: {combatInfo.currentRound | roundtotime}</span>
-      </div>
-      <ul>
-        <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy" rv-characterindex="%character%">
-          <div class="reOrder">
-            <div class="reOrderUp glyphicon glyphicon-chevron-up">
+    <div id="main">
+      <form id="addCharacter" action="">
+        <div>
+          <span class="inlineBlock">
+            <label for="name">Name</label>
+            <br/>
+            <input type="text" name="name">
+          </span>
+        </div>
+        <div>
+          <span class="size inlineBlock">
+            <label for="initiative">Size</label>
+            <br/>
+            <select name="size" class="sizeList">
+              <option rv-each-size="sizes" rv-sizeMod="size.sizeMod" rv-value='size.sizeName'>{size.sizeName}</option>
+            </select>
+          </span>
+          <span class="inlineBlock">
+            <label for="initiative">Init</label>
+            <br/>
+            <input type="number" name="initiative">
+          </span>
+        </div>
+        <h2>Defense</h2>
+        <div id="ACInput">
+          <span id="ACCalculation" class="inlineBlock">
+            <label for="totalAC">AC</label>
+            <span id="ACTotal" class="inlineBlock">10</span> = 10 + 
+          </span>
+          <span class="inlineBlock">
+            <label for="armorBonus">Armor</label>
+            <input type="number" name="armorBonus" class="ACContributor">
+          </span>
+          +
+          <span class="inlineBlock">
+            <label for="miscACBonus">Misc</label>
+            <input class="ACContributor" type="number" name="miscACBonus">
+          </span>
+          +
+          <span class="inlineBlock">
+            <label>DEX</label>
+            <span id="ACDexBonus" class="inlineBlock ACContributor">0</span>  
+          </span>
+          +
+          <span class="inlineBlock">
+            <label>Size</label>
+            <span id="ACSizeBonus" class="inlineBlock ACContributor">0</span>  
+          </span>
+        </div>
+        <span class="inlineBlock">
+          <label for="hp">HP</label>
+          <br/>
+          <input type="number" name="hp">
+        </span>
+        <div id="savesInput">
+          <span class="inlineBlock">
+            <label for="saveFortitude">Fort</label>
+            <br/>
+            <input type="number" name="saveFortitude">
+          </span>
+          <span class="inlineBlock">
+            <label for="saveReflex">Ref</label>
+            <br/>
+            <input type="number" name="saveReflex">
+          </span>
+          <span class="inlineBlock">
+            <label for="saveWill">Will</label>
+            <br/>
+            <input type="number" name="saveWill">
+          </span>
+        </div>
+        <h2>Offense</h2>
+        <span class="inlineBlock">
+          <label for="speed">Speed</label>
+          <br/>
+          <input type="number" name="speed">ft.
+        </span>
+        <h2>Statistics</h2>
+        <div>
+          <span id="strengthInput" class="inlineBlock">
+            <label for="strength">STR</label>
+            <br/>
+            <input value="10" type="number" name="strength">
+          </span>
+          <span id="dexterityInput" class="inlineBlock">
+            <label for="dexterity">DEX</label>
+            <br/>
+            <input value="10" type="number" name="dexterity">
+          </span>
+          <span id="constitutionInput" class="inlineBlock">
+            <label for="constitution">CON</label>
+            <br/>
+            <input value="10" type="number" name="constitution">
+          </span>
+          <span id="intelligenceInput" class="inlineBlock">
+            <label for="intelligence">INT</label>
+            <br/>
+            <input value="10" type="number" name="intelligence">
+          </span>
+          <span id="wisdomInput" class="inlineBlock">
+            <label for="wisdom">WIS</label>
+            <br/>
+            <input value="10" type="number" name="wisdom">
+          </span>
+          <span id="charismaInput" class="inlineBlock">
+            <label for="charisma">CHA</label>
+            <br/>
+            <input value="10" type="number" name="charisma">
+          </span>
+        </div>
+        <div>
+          <span class="inlineBlock">
+            <label for="baseAttack">BAB</label>
+            <br/>
+            <input type="number" name="baseAttack">
+          </span>
+        </div>
+        <input type="submit" value="Submit">
+      </form> 
+      <section id="combatLog">
+        <div id="combatLogheader">
+          <h1 id="roundCounter">Round {combatInfo.currentRound}</h1>
+          <span id="roundTimer">Time: {combatInfo.currentRound | roundtotime}</span>
+        </div>
+        <ul>
+          <li rv-each-character="characters" class="combatParticipant" rv-setclass="character.isEnemy" rv-characterindex="%character%">
+            <div class="reOrder">
+              <div class="reOrderUp glyphicon glyphicon-chevron-up">
 
+              </div>
+              <div class="reOrderDown glyphicon glyphicon-chevron-down">
+                
+              </div>
             </div>
-            <div class="reOrderDown glyphicon glyphicon-chevron-down">
-              
-            </div>
-          </div>
-          <div class="participantHeader">
-            <div class="initiativeOrder hoverable">
-              {character.initiativeOrder}
-              <span class="hoverBackground hiddenStat">
-                {character.initiativeOrder} - {character.initiativeRoll}
-              </span>
-            </div>
-            <div class="participantName">
-              <h2 charactervalue="name">{character.name}</h2>
-            </div>
-            <div class="primaryStats">
-              <div class="participantLabel backgroundImageLabel hitPointsWrapper hoverable">
-                <span class="currentHP">{character.currentHP}</span>
+            <div class="participantHeader">
+              <div class="initiativeOrder hoverable">
+                {character.initiativeOrder}
                 <span class="hoverBackground hiddenStat">
-                  <div class="removeHP">
-                    <span>-5</span>
-                    <span>-1</span>
-                  </div>
-                  <span class="maxHP">{character.currentHP}/{character.maxHP}</span>
-                  <div class="addHP">
-                    <span>+1</span>
-                    <span>+5</span>
-                  </div>
+                  {character.initiativeOrder} - {character.initiativeRoll}
                 </span>
               </div>
-              <div class="participantLabel armorClassWrapper hoverable">
-                <span class="participantLabel backgroundImageLabel ACLabel">{character.AC}</span>
-                <span class="backgroundImageLabel hiddenStat flatFootACLabel">{character.ACFlatFoot}</span>
-                <span class="backgroundImageLabel hiddenStat touchACLabel">{character.ACTouch}</span>
-                <span class="hoverBackground hiddenStat"></span>
+              <div class="participantName">
+                <h2 charactervalue="name">{character.name}</h2>
               </div>
-            </div>
-            <div class="secondaryStats">
-              <div class="top">
-                <span><h4 class="inlineBlock">Init:</h4>{character.initiative}</span>
-                <span><h4 class="inlineBlock">Speed:</h4>{character.speed}</span>  
-              </div>
-              <div class="bottom">
-                <span><h4 class="inlineBlock">Ref:</h4>{character.saveReflex}</span>
-                <span><h4 class="inlineBlock">Con:</h4>{character.saveConstitution}</span>
-                <span><h4 class="inlineBlock">Will:</h4>{character.saveWill}</span>
-                <span><h4 class="inlineBlock">CMB:</h4>{character.CMB}</span>
-                <span><h4 class="inlineBlock">CMD:</h4>{character.CMD}</span>
-              </div>
-            </div>
-            <div class="statusEffects">
-              <div class="statusIndicator">
-                <img src="../app/img/hourGlass.png" />
-              </div>
-              <div class="statusEffectsList">
-                <table>
-                  <thead>
-                    <th>Effect Name</th>
-                    <th>Description</th>
-                    <th>Rounds Remaining</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Battle Cry</td>
-                      <td>Increase AC by 2</td>
-                      <td>4</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="participantBody">
-            <div class="weapons">
-              <div class="weaponHeader"><h3>Weapons</h3><span>[Expand]</span></div>
-              <div class="meleeAttack">
-                <div class="participantWeapon">
-                  <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+              <div class="primaryStats">
+                <div class="participantLabel backgroundImageLabel hitPointsWrapper hoverable">
+                  <span class="currentHP">{character.currentHP}</span>
+                  <span class="hoverBackground hiddenStat">
+                    <div class="removeHP">
+                      <span>-5</span>
+                      <span>-1</span>
+                    </div>
+                    <span class="maxHP">{character.currentHP}/{character.maxHP}</span>
+                    <div class="addHP">
+                      <span>+1</span>
+                      <span>+5</span>
+                    </div>
+                  </span>
                 </div>
-                <div class="participantWeapon">
-                  <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+                <div class="participantLabel armorClassWrapper hoverable">
+                  <span class="participantLabel backgroundImageLabel ACLabel">{character.AC}</span>
+                  <span class="backgroundImageLabel hiddenStat flatFootACLabel">{character.ACFlatFoot}</span>
+                  <span class="backgroundImageLabel hiddenStat touchACLabel">{character.ACTouch}</span>
+                  <span class="hoverBackground hiddenStat"></span>
                 </div>
               </div>
-              <div class="rangedAttack">
+              <div class="secondaryStats">
+                <div class="top">
+                  <span><h4 class="inlineBlock">Init:</h4>{character.initiative}</span>
+                  <span><h4 class="inlineBlock">Speed:</h4>{character.speed}</span>  
+                </div>
+                <div class="bottom">
+                  <span><h4 class="inlineBlock">Ref:</h4>{character.saveReflex}</span>
+                  <span><h4 class="inlineBlock">Con:</h4>{character.saveConstitution}</span>
+                  <span><h4 class="inlineBlock">Will:</h4>{character.saveWill}</span>
+                  <span><h4 class="inlineBlock">CMB:</h4>{character.CMB}</span>
+                  <span><h4 class="inlineBlock">CMD:</h4>{character.CMD}</span>
+                </div>
+              </div>
+              <div class="statusEffects">
+                <div class="statusIndicator">
+                  <img src="../app/img/hourGlass.png" />
+                </div>
+                <div class="statusEffectsList">
+                  <table>
+                    <thead>
+                      <th>Effect Name</th>
+                      <th>Description</th>
+                      <th>Rounds Remaining</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Battle Cry</td>
+                        <td>Increase AC by 2</td>
+                        <td>4</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="participantBody">
+              <div class="weapons">
+                <div class="weaponHeader"><h3>Weapons</h3><span>[Expand]</span></div>
+                <div class="meleeAttack">
                   <div class="participantWeapon">
-                    <div><h4>Short Bow: +3 / 1d6+2</h4></div>
+                    <div><h4>Short Sword: +5 / 1D6+5</h4></div>
                   </div>
+                  <div class="participantWeapon">
+                    <div><h4>Short Sword: +5 / 1D6+5</h4></div>
+                  </div>
+                </div>
+                <div class="rangedAttack">
+                    <div class="participantWeapon">
+                      <div><h4>Short Bow: +3 / 1d6+2</h4></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
               </div>
-              <div class="clearfix"></div>
             </div>
-          </div>
-          <hr/>
-        </li>
-      </ul>
-    <button type="button" id="btnEndTurn" class="btn btn-success">End turn</button>
-    </section>
+            <hr/>
+          </li>
+        </ul>
+      <button type="button" id="btnEndTurn" class="btn btn-success">End turn</button>
+      </section>
+    </div>
   </body>
 
   <script>window.$ = window.jQuery = require('jquery');</script>

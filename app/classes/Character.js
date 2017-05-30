@@ -1,12 +1,14 @@
-function Character(name, isEnemy, maxHP, size, AC, ACTouch, baseAttack, strength, dexterity, constitution, intelligence, wisdom, charisma, initiative, speed, saveReflex, saveConstitution, saveWill, meleeWeapons, rangedWeapons, statusEffects){
+function Character(name, isEnemy, maxHP, size, armorBonus, miscACBonus, baseAttack, strength, dexterity, constitution, intelligence, wisdom, charisma, initiative, speed, saveReflex, saveConstitution, saveWill, meleeWeapons, rangedWeapons, statusEffects){
     this.name = name;
     this.isEnemy = isEnemy;
     this.maxHP = maxHP;
     this.size = size;
     this.currentHP = maxHP;
-    this.AC = AC;
-    this.ACTouch = ACTouch;
-    this.ACFlatFoot = AC - CalculateStatBonus(dexterity);
+    this.armorBonus = armorBonus;
+    this.miscACBonus = miscACBonus;
+    this.AC = 10 + CalculateStatBonus(dexterity) + armorBonus + miscACBonus;
+    this.ACTouch = 10 + CalculateStatBonus(dexterity) + miscACBonus;
+    this.ACFlatFoot = 10 + armorBonus + miscACBonus;
     this.baseAttack = baseAttack;
     this.strength = strength;
     this.dexterity = dexterity;
@@ -64,4 +66,7 @@ function CalculateCMD(baseAttack, strength, dexterity, size){
     }
     return CMD + sizeMod;
 }
-module.exports = Character;
+module.exports = {
+    Character,
+    CalculateStatBonus
+}
