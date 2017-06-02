@@ -9,187 +9,194 @@
   </head>
   <body>
     <div id="main">
-      <form id="addCharacter">
-        <div>
-          <span class="inlineBlock">
-            <label for="name">Name</label>
-            <br/>
-            <input type="text" name="name">
-          </span>
-          <span class="inlineBlock">
-            <input id="characterTypeCheckbox" name="isEnemy" checked type="checkbox">
-          </span>
+      <section id="addCharacterWrapper">
+        <div class="popupWrapper" id="addCharacterFormWrapper">
+          <form id="addCharacter">
+            <div>
+              <span class="inlineBlock">
+                <label for="name">Name</label>
+                <br/>
+                <input type="text" name="name">
+              </span>
+              <span class="inlineBlock">
+                <input id="characterTypeCheckbox" name="isEnemy" checked type="checkbox">
+              </span>
+            </div>
+            <div>
+              <span class="size inlineBlock">
+                <label for="initiative">Size</label>
+                <br/>
+                <select name="sizeIndex" id="sizeSelectList" class="sizeList">
+                  <option rv-each-size="sizes" rv-selected="size.sizeMod" rv-sizeMod="size.sizeMod" rv-value='%size%'>{size.sizeName}</option>
+                </select>
+              </span>
+              <span class="inlineBlock">
+                <label for="initiative">Init</label>
+                <br/>
+                <input type="number"  value="0" name="initiative">
+              </span>
+            </div>
+            <h2>Defense</h2>
+            <div id="ACInput">
+              <span id="ACCalculation" class="inlineBlock">
+                <label for="totalAC">AC</label>
+                <span id="ACTotal" class="inlineBlock">10</span> = 10 + 
+              </span>
+              <span class="inlineBlock">
+                <label for="armorBonus">Armor</label>
+                <input type="number"  value="0" name="armorBonus" class="ACContributor">
+              </span>
+              +
+              <span class="inlineBlock">
+                <label for="miscACBonus">Misc</label>
+                <input class="ACContributor"  value="0" type="number" name="miscACBonus">
+              </span>
+              +
+              <span class="inlineBlock">
+                <label>DEX</label>
+                <span id="ACDexBonus" class="inlineBlock ACContributor">0</span>  
+              </span>
+              +
+              <span class="inlineBlock">
+                <label>Size</label>
+                <span id="ACSizeBonus" class="inlineBlock ACContributor">0</span>  
+              </span>
+            </div>
+            <span class="inlineBlock">
+              <label for="hp">HP</label>
+              <br/>
+              <input type="number" value="0" name="hp">
+            </span>
+            <div id="savesInput">
+              <span class="inlineBlock">
+                <label for="saveFortitude">Fort</label>
+                <br/>
+                <input type="number"  value="0" name="saveFortitude">
+              </span>
+              <span class="inlineBlock">
+                <label for="saveReflex">Ref</label>
+                <br/>
+                <input type="number"  value="0" name="saveReflex">
+              </span>
+              <span class="inlineBlock">
+                <label for="saveWill">Will</label>
+                <br/>
+                <input type="number"  value="0" name="saveWill">
+              </span>
+            </div>
+            <h2>Offense</h2>
+            <span class="inlineBlock">
+              <label for="speed">Speed</label>
+              <br/>
+              <input type="number" name="speed" value="30">ft.
+            </span>
+            <h2>Statistics</h2>
+            <div>
+              <span id="strengthInput" class="inlineBlock">
+                <label for="strength">STR</label>
+                <br/>
+                <input value="10" type="number" name="strength">
+              </span>
+              <span id="dexterityInput" class="inlineBlock">
+                <label for="dexterity">DEX</label>
+                <br/>
+                <input value="10" type="number" name="dexterity">
+              </span>
+              <span id="constitutionInput" class="inlineBlock">
+                <label for="constitution">CON</label>
+                <br/>
+                <input value="10" type="number" name="constitution">
+              </span>
+              <span id="intelligenceInput" class="inlineBlock">
+                <label for="intelligence">INT</label>
+                <br/>
+                <input value="10" type="number" name="intelligence">
+              </span>
+              <span id="wisdomInput" class="inlineBlock">
+                <label for="wisdom">WIS</label>
+                <br/>
+                <input value="10" type="number" name="wisdom">
+              </span>
+              <span id="charismaInput" class="inlineBlock">
+                <label for="charisma">CHA</label>
+                <br/>
+                <input value="10" type="number" name="charisma">
+              </span>
+            </div>
+            <div>
+              <span id="baseAttackInput"9 class="inlineBlock">
+                <label for="baseAttack">BAB</label>
+                <br/>
+                <input type="number" value="0" name="baseAttack">
+              </span>
+            </div>
+            <div>
+              <div id="CMBInput">
+                <span id="CMBCalculation" class="inlineBlock">
+                  <label for="totalCMB">CMB</label>
+                  <span id="CMBTotal" class="inlineBlock">0 </span>
+                </span>
+                =
+                <span class="inlineBlock">
+                  <label for="CMBBABBonus">BAB</label>
+                  <span id="CMBBABBonus" class="inlineBlock CMBContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label>STR</label>
+                  <span id="CMBSTRBonus" class="inlineBlock CMBContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label>Size</label>
+                  <span id="CMBSizeBonus" class="inlineBlock CMBContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label for="miscCMBBonus">Misc</label>
+                  <input class="CMBContributor"  value="0" type="number" name="miscCMBBonus">
+                </span>
+              </div>
+            </div>
+            <div>
+              <div id="CMDInput">
+                <span id="CMDCalculation" class="inlineBlock">
+                  <label for="totalCMD">CMD</label>
+                  <span id="CMDTotal" class="inlineBlock">10</span> = 10 +
+                </span>
+                <span class="inlineBlock">
+                  <label for="CMDBABBonus">BAB</label>
+                  <span id="CMDBABBonus" class="inlineBlock CMDContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label>STR</label>
+                  <span id="CMDSTRBonus" class="inlineBlock CMDContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label>DEX</label>
+                  <span id="CMDDEXBonus" class="inlineBlock CMDContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label>Size</label>
+                  <span id="CMDSizeBonus" class="inlineBlock CMDContributor">0</span>  
+                </span>
+                +
+                <span class="inlineBlock">
+                  <label for="miscCMDBonus">Misc</label>
+                  <input class="CMDContributor"  value="0" type="number" name="miscCMDBonus">
+                </span>
+              </div>
+            </div>
+            <input type="submit" value="Save">
+          </form> 
         </div>
-        <div>
-          <span class="size inlineBlock">
-            <label for="initiative">Size</label>
-            <br/>
-            <select name="sizeIndex" id="sizeSelectList" class="sizeList">
-              <option rv-each-size="sizes" rv-selected="size.sizeMod" rv-sizeMod="size.sizeMod" rv-value='%size%'>{size.sizeName}</option>
-            </select>
-          </span>
-          <span class="inlineBlock">
-            <label for="initiative">Init</label>
-            <br/>
-            <input type="number"  value="0" name="initiative">
-          </span>
-        </div>
-        <h2>Defense</h2>
-        <div id="ACInput">
-          <span id="ACCalculation" class="inlineBlock">
-            <label for="totalAC">AC</label>
-            <span id="ACTotal" class="inlineBlock">10</span> = 10 + 
-          </span>
-          <span class="inlineBlock">
-            <label for="armorBonus">Armor</label>
-            <input type="number"  value="0" name="armorBonus" class="ACContributor">
-          </span>
-          +
-          <span class="inlineBlock">
-            <label for="miscACBonus">Misc</label>
-            <input class="ACContributor"  value="0" type="number" name="miscACBonus">
-          </span>
-          +
-          <span class="inlineBlock">
-            <label>DEX</label>
-            <span id="ACDexBonus" class="inlineBlock ACContributor">0</span>  
-          </span>
-          +
-          <span class="inlineBlock">
-            <label>Size</label>
-            <span id="ACSizeBonus" class="inlineBlock ACContributor">0</span>  
-          </span>
-        </div>
-        <span class="inlineBlock">
-          <label for="hp">HP</label>
-          <br/>
-          <input type="number" value="0" name="hp">
-        </span>
-        <div id="savesInput">
-          <span class="inlineBlock">
-            <label for="saveFortitude">Fort</label>
-            <br/>
-            <input type="number"  value="0" name="saveFortitude">
-          </span>
-          <span class="inlineBlock">
-            <label for="saveReflex">Ref</label>
-            <br/>
-            <input type="number"  value="0" name="saveReflex">
-          </span>
-          <span class="inlineBlock">
-            <label for="saveWill">Will</label>
-            <br/>
-            <input type="number"  value="0" name="saveWill">
-          </span>
-        </div>
-        <h2>Offense</h2>
-        <span class="inlineBlock">
-          <label for="speed">Speed</label>
-          <br/>
-          <input type="number" name="speed" value="30">ft.
-        </span>
-        <h2>Statistics</h2>
-        <div>
-          <span id="strengthInput" class="inlineBlock">
-            <label for="strength">STR</label>
-            <br/>
-            <input value="10" type="number" name="strength">
-          </span>
-          <span id="dexterityInput" class="inlineBlock">
-            <label for="dexterity">DEX</label>
-            <br/>
-            <input value="10" type="number" name="dexterity">
-          </span>
-          <span id="constitutionInput" class="inlineBlock">
-            <label for="constitution">CON</label>
-            <br/>
-            <input value="10" type="number" name="constitution">
-          </span>
-          <span id="intelligenceInput" class="inlineBlock">
-            <label for="intelligence">INT</label>
-            <br/>
-            <input value="10" type="number" name="intelligence">
-          </span>
-          <span id="wisdomInput" class="inlineBlock">
-            <label for="wisdom">WIS</label>
-            <br/>
-            <input value="10" type="number" name="wisdom">
-          </span>
-          <span id="charismaInput" class="inlineBlock">
-            <label for="charisma">CHA</label>
-            <br/>
-            <input value="10" type="number" name="charisma">
-          </span>
-        </div>
-        <div>
-          <span id="baseAttackInput"9 class="inlineBlock">
-            <label for="baseAttack">BAB</label>
-            <br/>
-            <input type="number" value="0" name="baseAttack">
-          </span>
-        </div>
-        <div>
-          <div id="CMBInput">
-            <span id="CMBCalculation" class="inlineBlock">
-              <label for="totalCMB">CMB</label>
-              <span id="CMBTotal" class="inlineBlock">0 </span>
-            </span>
-            =
-            <span class="inlineBlock">
-              <label for="CMBBABBonus">BAB</label>
-              <span id="CMBBABBonus" class="inlineBlock CMBContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label>STR</label>
-              <span id="CMBSTRBonus" class="inlineBlock CMBContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label>Size</label>
-              <span id="CMBSizeBonus" class="inlineBlock CMBContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label for="miscCMBBonus">Misc</label>
-              <input class="CMBContributor"  value="0" type="number" name="miscCMBBonus">
-            </span>
-          </div>
-        </div>
-        <div>
-          <div id="CMDInput">
-            <span id="CMDCalculation" class="inlineBlock">
-              <label for="totalCMD">CMD</label>
-              <span id="CMDTotal" class="inlineBlock">10</span> = 10 +
-            </span>
-            <span class="inlineBlock">
-              <label for="CMDBABBonus">BAB</label>
-              <span id="CMDBABBonus" class="inlineBlock CMDContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label>STR</label>
-              <span id="CMDSTRBonus" class="inlineBlock CMDContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label>DEX</label>
-              <span id="CMDDEXBonus" class="inlineBlock CMDContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label>Size</label>
-              <span id="CMDSizeBonus" class="inlineBlock CMDContributor">0</span>  
-            </span>
-            +
-            <span class="inlineBlock">
-              <label for="miscCMDBonus">Misc</label>
-              <input class="CMDContributor"  value="0" type="number" name="miscCMDBonus">
-            </span>
-          </div>
-        </div>
-        <input type="submit" value="Submit">
-      </form> 
+      </section>
+      <section id="topMenu">
+        <button type="button" id="btnCreateCharacter" class="btn btn-primary">Create character</button>
+      </section>
       <section id="combatLog">
         <div id="combatLogheader">
           <h1 id="roundCounter">Round {combatInfo.currentRound}</h1>

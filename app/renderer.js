@@ -54,6 +54,10 @@ $(function() {
       on: 'Enemy',
       off: 'Hero'
   });
+  
+  $(document).bind('click', function(e) {
+    HidePopups(e); 
+  });
   $("#combatLog").on("click", ".removeHP span", function(){
     AddHP(GetCharacterIndex($(this)), $(this).text());
   });
@@ -68,6 +72,9 @@ $(function() {
   });
   $("#btnEndTurn").click(function(){
     EndTurn();
+  });
+  $("#btnCreateCharacter").click(function(e){
+    ShowCharacterCreation(e);
   });
   $("#addCharacter").on("change", "#dexterityInput input", function(){
     NewCharDEXUpdate($(this).val());
@@ -103,6 +110,17 @@ $(function() {
     processForm($(this), e);
   });
 });
+function HidePopups(e){
+  if($(e.target).closest('.popupWrapper').length) {
+  }
+  else{
+    $(".popupWrapper").hide();
+  }
+}
+function ShowCharacterCreation(e){
+  $('#addCharacterFormWrapper').show();
+  e.stopPropagation();
+}
 function ActivateEditable(){
   $(".participantName h2").editable("destroy");
   $('.participantName h2').editable({
