@@ -25,6 +25,7 @@
     "nedb": "^1.8.0",
     "rivets": "^0.9.6",
     "bootstrap": "3.3.7",
-    "x-editable":"^1.5.1"
+    "x-editable":"^1.5.1",
+    "bootstrap-toggle":"^2.2.2"
   }
 }

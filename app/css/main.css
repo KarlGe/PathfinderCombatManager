@@ -114,6 +114,7 @@ textarea {
    ========================================================================== */
 .inlineBlock{
     display: inline-block;
+    position: relative;
 }
 #main{
     width: 43em;
@@ -129,20 +130,36 @@ textarea {
     display: block;
     text-align: center;
 }
-#ACInput label{
+#addCharacter label#addHeroType{
+    margin-bottom:.4em;
+}
+#addCharacter .toggle{
+    height: 1.8em!important;
+    margin-top: -.2em;
+    min-height: 0;
+}
+#addCharacter .toggle label{
+    padding-top:.2em;
+}
+.toggle-group .toggle-off, .toggle-group .toggle-off:active, .toggle-group .toggle-off:hover{
+    background-color: #23a8ec; 
+    color: #FFF;
+}
+.toggle-group .toggle-on, .toggle-group .toggle-on:active{
+    background-color: #ec2323; 
+}
+#ACInput label, #CMBInput label, #CMDInput label{
     display: block!important;
 }
-#ACInput{
-    width:16em;
+#ACInput, #CMDInput, #CMBInput{
+    width:20em;
     font-size: 1.3em;
 }
-#ACInput label{
+#ACInput label, #ACInput input,#CMDInput label, #CMDInput input,#CMBInput label, #CMBInput input{
+    font-size: 16px;
     margin-bottom: -.5em;
 }
-#ACInput label, #ACInput input{
-    font-size: 16px;
-}
-#ACTotal{
+#ACTotal, #CMBTotal, #CMDTotal{
     width: 2em;
     text-align: left!important;
     display: inline-block!important;

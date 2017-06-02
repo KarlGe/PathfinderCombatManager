@@ -9,18 +9,11 @@ var combatInfo = new Classes.CombatInfo(1, null);
 var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/x2", "-", "Piercing")
 var meleeWeapons = [];
 meleeWeapons.push(rapier);
-var character = new Classes.Character.Character("Renestrae",false,35,"Medium",2,0,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
-var character2 = new Classes.Character.Character("Goblin Warrior",true,135,"Medium",4,0,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
-var character3 = new Classes.Character.Character("Velcu",false,35,"Medium",6,2,4,10,16,14,12,12,16,4,30,5,2,2,meleeWeapons,null,null)
+var character = new Classes.Character.Character("Renestrae",false,4,4,5,2,35,5,4,2,30,10,16,12,10,11,14,4,0,0)
 character.initiativeRoll = 20;
 character.initiativeOrder = 1;
-character2.initiativeRoll = 18;
-character2.initiativeOrder = 2;
-character3.initiativeRoll = 12;
-character3.initiativeOrder = 3;
-var characters = [character, character2, character3];
+var characters = [character];
 var combatView = null;
-
 
 //Editable success handler
 $.fn.editable.defaults.send = 'never';
@@ -53,8 +46,14 @@ $(function() {
   combatInfo.currentCharacter = characters[0];
   rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
   combatView = rivets.bind($('.combatParticipant'), {characters: characters});
-  sizes = rivets.bind($(".sizeList option"), {sizes: sizes})
+  sizes = rivets.bind($(".sizeList option"), {sizes: sizes});
   ActivateEditable();
+  //Set the default selected to be the 4th value (Medium);
+  $("#sizeSelectList").val(4);
+  $('#characterTypeCheckbox').bootstrapToggle({
+      on: 'Enemy',
+      off: 'Hero'
+  });
   $("#combatLog").on("click", ".removeHP span", function(){
     AddHP(GetCharacterIndex($(this)), $(this).text());
   });
@@ -71,13 +70,25 @@ $(function() {
     EndTurn();
   });
   $("#addCharacter").on("change", "#dexterityInput input", function(){
-    NewCharDexUpdate($(this).val());
+    NewCharDEXUpdate($(this).val());
+  });
+  $("#addCharacter").on("change", "#strengthInput input", function(){
+    NewCharSTRUpdate($(this).val());
+  });
+  $("#addCharacter").on("change", "#baseAttackInput input", function(){
+    NewCharBABUpdate($(this).val());
   });
   $("#addCharacter").on("change", ".sizeList", function(){
     NewCharacterSizeUpdate($("option:selected", this).attr("sizeMod"));
   });
   $("#addCharacter").on("change", ".ACContributor", function(){
-    NewCharACUpdate();
+    NewCharUpdate("#ACTotal", ".ACContributor");
+  });
+  $("#addCharacter").on("change", ".CMBContributor", function(){
+    NewCharUpdate("#CMBTotal", ".CMBContributor", false);
+  });
+  $("#addCharacter").on("change", ".CMDContributor", function(){
+    NewCharUpdate("#CMDTotal", ".CMDContributor");
   });
   $("#combatLog").on({
       mouseenter: function () {
@@ -87,6 +98,10 @@ $(function() {
         $(this).children('.hiddenStat').stop().fadeOut(100);
       }
   }, ".hoverable");
+  $('#addCharacter').on("submit",function(e) {
+    e.preventDefault(); 
+    processForm($(this), e);
+  });
 });
 function ActivateEditable(){
   $(".participantName h2").editable("destroy");
@@ -95,20 +110,41 @@ function ActivateEditable(){
     title: 'Enter name'
   }); 
 }
-function NewCharDexUpdate(newValue){
+function NewCharSTRUpdate(newValue){
+  var modifier = Classes.Character.CalculateStatBonus(newValue);
+  $("#CMBSTRBonus").text(modifier);
+  NewCharUpdate("#CMBTotal", ".CMBContributor", false);
+}
+function NewCharBABUpdate(newValue){
+  $("#CMBBABBonus").text(newValue);
+  NewCharUpdate("#CMBTotal", ".CMBContributor", false);
+  $("#CMDBABBonus").text(newValue);
+  NewCharUpdate("#CMDTotal", ".CMDContributor");
+}
+function NewCharDEXUpdate(newValue){
   var modifier = Classes.Character.CalculateStatBonus(newValue);
   $("#ACDexBonus").text(modifier);
-  NewCharACUpdate();
+  NewCharUpdate("#ACTotal", ".ACContributor");
+  $("#CMDDEXBonus").text(modifier);
+  NewCharUpdate("#CMDTotal", ".CMDContributor");
 }
 function NewCharacterSizeUpdate(sizeMod){
+  val = parseInt(sizeMod); 
   //We reverse it because characters get negative AC for being larger and positive AC for being smaller. Opposite of how the list is defined
-  val = parseInt(sizeMod) * -1; 
-  $("#ACSizeBonus").text(val);
-  NewCharACUpdate();
+  $("#ACSizeBonus").text(val * -1); 
+  NewCharUpdate("#ACTotal", ".ACContributor");
+  $("#CMDSizeBonus").text(val);
+  NewCharUpdate("#CMDTotal", ".CMDContributor");
+  $("#CMBSizeBonus").text(val);
+  NewCharUpdate("#CMBTotal", ".CMBContributor", false);
+  
 }
-function NewCharACUpdate(){
-  ACTotal = 10;
-  $(".ACContributor").each(function(){
+function NewCharUpdate(fieldToUpdate, updateFrom, useBaseTen = true){
+  total = 0;
+  if(useBaseTen){
+    total = 10;
+  }
+  $(updateFrom).each(function(){
     value = "";
     if($(this).is("input")){
       value = $(this).val();
@@ -117,10 +153,15 @@ function NewCharACUpdate(){
       value = $(this).text();
     }
     if(value != ""){
-      ACTotal += parseInt(value);
+      total += parseInt(value);
     }
   })
-  $("#ACTotal").text(ACTotal);
+  //Assumes there's a hidden input field as a sibling, where the value should be entered as well
+  hiddenSiblingInput = $(fieldToUpdate).siblings("input");
+  if(hiddenSiblingInput != undefined){
+    $(fieldToUpdate).siblings("input").val(total);
+  }
+  $(fieldToUpdate).text(total);
 }
 function pad(num, size) {
     var s = "000000000" + num;
@@ -190,6 +231,50 @@ Array.prototype.move = function (old_index, new_index) {
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     return this; // for testing purposes
 };
+function processForm(form, e) {
+    if (e.preventDefault) e.preventDefault();
+    var values = form.serializeArray();
+    var result = { };
+    jQuery.each( values, function( i, field ) {
+      //$( "#results" ).append( field.value + " " );
+      console.log(field.name +" = "+ field.value);
+      result[this.name] = this.value;
+    });
+    console.log();
+    var character = new Classes.Character.Character(
+      result["name"],
+      true,
+      result["sizeIndex"],
+      result["initiative"],
+      result["armorBonus"],
+      result["miscACBonus"],
+      result["hp"],
+      result["saveFortitude"],
+      result["saveReflex"],
+      result["saveWill"],
+      result["speed"],
+      result["strength"],
+      result["dexterity"],
+      result["constitution"],
+      result["intelligence"],
+      result["wisdom"],
+      result["charisma"],
+      result["baseAttack"],
+      result["miscCMBBonus"],
+      result["miscCMDBonus"]
+    );
+    characters.push(character);
+    /*var character = new Classes.Character.Character("Renestrae",false,4,4,5,2,35,5,4,2,30,10,16,12,10,11,14,4,0,0)
+    character.initiativeRoll = 20;
+    character.initiativeOrder = 1;
+    var characters = [character];*/
+
+    /* do what you want with the form */
+
+    // You must return false to prevent the default form behavior
+    return false;
+}
+
 
 /*
 var Datastore = require('nedb')
