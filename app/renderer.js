@@ -1,18 +1,28 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-var Classes = require("./classes");
-var rivets = require("rivets");
+"use strict"
 
+var Classes = require("./classes");
+var Rivets = require("rivets");
+var dbHandler = new Classes.DatabaseHandler();
 var sizes = Classes.Size;
 var combatInfo = new Classes.CombatInfo(1, null);
 var rapier = new Classes.Weapon("Rapier", "1d4", "1d6", "1d8", "0", "0", "18-20/x2", "-", "Piercing")
 var meleeWeapons = [];
+
 meleeWeapons.push(rapier);
-var character = new Classes.Character.Character("Renestrae",false,4,4,5,2,35,5,4,2,30,10,16,12,10,11,14,4,0,0)
+/*var character = new Classes.Character.Character("Renestrae",false,4,4,5,2,35,5,4,2,30,10,16,12,10,11,14,4,0,0)
 character.initiativeRoll = 20;
 character.initiativeOrder = 1;
 var characters = [character];
+
+db.character.insert(character, function(err, newDoc){
+
+});
+*/
+var availableCharacters = dbHandler.PopulateAvailableCharacters();
+var characters = availableCharacters;
 var combatView = null;
 
 //Editable success handler
@@ -27,7 +37,7 @@ $.fn.editable.defaults.success = function(response, newValue){
   ActivateEditable();
 }
 $(function() {
-  rivets.binders.setclass = function(el, value) {
+  Rivets.binders.setclass = function(el, value) {
     if(value === true){
       $(el).removeClass("hero");
       $(el).addClass("enemy");
@@ -37,16 +47,16 @@ $(function() {
       $(el).addClass("hero");
     }
   }
-  rivets.formatters.roundtotime = function (value) {
-    time = parseInt(value) * 6 - 6;
-    minutes = Math.floor(time / 60);
-    seconds = time - (minutes * 60);
+  Rivets.formatters.roundtotime = function (value) {
+    var time = parseInt(value) * 6 - 6;
+    var minutes = Math.floor(time / 60);
+    var seconds = time - (minutes * 60);
 	  return pad(minutes, 2) + ":" + pad(seconds, 2);
   };
   combatInfo.currentCharacter = characters[0];
-  rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
-  combatView = rivets.bind($('.combatParticipant'), {characters: characters});
-  sizes = rivets.bind($(".sizeList option"), {sizes: sizes});
+  Rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
+  combatView = Rivets.bind($('.combatParticipant'), {characters: characters});
+  sizes = Rivets.bind($(".sizeList option"), {sizes: sizes});
   ActivateEditable();
   //Set the default selected to be the 4th value (Medium);
   $("#sizeSelectList").val(4);
@@ -147,7 +157,7 @@ function NewCharDEXUpdate(newValue){
   NewCharUpdate("#CMDTotal", ".CMDContributor");
 }
 function NewCharacterSizeUpdate(sizeMod){
-  val = parseInt(sizeMod); 
+  var val = parseInt(sizeMod); 
   //We reverse it because characters get negative AC for being larger and positive AC for being smaller. Opposite of how the list is defined
   $("#ACSizeBonus").text(val * -1); 
   NewCharUpdate("#ACTotal", ".ACContributor");
@@ -158,12 +168,12 @@ function NewCharacterSizeUpdate(sizeMod){
   
 }
 function NewCharUpdate(fieldToUpdate, updateFrom, useBaseTen = true){
-  total = 0;
+  var total = 0;
   if(useBaseTen){
     total = 10;
   }
   $(updateFrom).each(function(){
-    value = "";
+    var value = "";
     if($(this).is("input")){
       value = $(this).val();
     }
@@ -175,7 +185,7 @@ function NewCharUpdate(fieldToUpdate, updateFrom, useBaseTen = true){
     }
   })
   //Assumes there's a hidden input field as a sibling, where the value should be entered as well
-  hiddenSiblingInput = $(fieldToUpdate).siblings("input");
+  var hiddenSiblingInput = $(fieldToUpdate).siblings("input");
   if(hiddenSiblingInput != undefined){
     $(fieldToUpdate).siblings("input").val(total);
   }

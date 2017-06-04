@@ -1,6 +1,8 @@
-function Size(sizeName, sizeMod){
-    this.sizeName = sizeName;
-    this.sizeMod = sizeMod;
+class Size{
+    constructor(sizeName, sizeMod){
+        this.sizeName = sizeName;
+        this.sizeMod = sizeMod;
+    }
 }
 var sizes =[
     new Size("Fine", -8),
