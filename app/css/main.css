@@ -468,7 +468,36 @@ textarea {
 
 
 
+/* Available characters list */
 
+#availableCharacters{
+    display: inline-block;
+    position: relative;
+}
+#availableCharacters .list{
+    position: absolute;
+    top:1.5em;
+    width:20em;
+    z-index: 10;
+    background-color: white;
+    font-size: 1em;
+    padding:0.5em;
+}
+#availableCharacters .search{
+    width:19.9em;
+}
+#availableCharacters h3{
+    font-size: 1.2em;
+}
+#availableCharacters .list li > * {
+    display: inline-block;
+}
+#availableCharacters .addButton{
+    margin-left:.5em;
+    color:green;
+}
+
+/* End Available characters list*/
 
 
 

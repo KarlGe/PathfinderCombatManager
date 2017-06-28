@@ -7,15 +7,15 @@ class DatabaseHandler{
         db.statusEffect = new Datastore({ filename: 'app/db/statusEffect.db', autoload: true });
         db.weapon = new Datastore({ filename: 'app/db/weapon.db', autoload: true });
     }
-    PopulateAvailableCharacters(){
+    PopulateAvailableCharacters(callback){
         var self = this;
         var availableCharacters = [];
         db.character.find({}, function (err, docs) {
             $.each(docs, function(index, character){
                 availableCharacters.push(self.CreateCharacterFromDB(character));
             })
+            callback(availableCharacters);
         });
-        return availableCharacters;
     }
     CreateCharacterFromDB(character){
         var newCharacter = new Classes.Character(

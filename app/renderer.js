@@ -5,6 +5,7 @@
 
 var Classes = require("./classes");
 var Rivets = require("rivets");
+var ListJS = require("list.js");
 var dbHandler = new Classes.DatabaseHandler();
 var sizes = Classes.Size;
 var combatInfo = new Classes.CombatInfo(1, null);
@@ -21,22 +22,24 @@ db.character.insert(character, function(err, newDoc){
 
 });
 */
-var availableCharacters = dbHandler.PopulateAvailableCharacters();
-var characters = availableCharacters;
+var availableCharacters = [];
+var characters = [];
 var combatView = null;
 
-//Editable success handler
-$.fn.editable.defaults.send = 'never';
-$.fn.editable.defaults.url = function(response, newValue){
-  return null;
-}
-$.fn.editable.defaults.success = function(response, newValue){
-  var valueToChange = $(this).attr("charactervalue");
-  var index = GetCharacterIndex($(this));
-  characters[index][valueToChange] = newValue;
+function Setup(availableCharacters){
+  availableCharacters = availableCharacters
+  characters = availableCharacters;
+  
+  combatInfo.currentCharacter = characters[0];
+  Rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
+  combatView = Rivets.bind($('.combatParticipant'), {characters: characters});
+  sizes = Rivets.bind($(".sizeList option"), {sizes: sizes});
   ActivateEditable();
+  
+  CreateAvailableCharacterSearchList(availableCharacters);
 }
 $(function() {
+  
   Rivets.binders.setclass = function(el, value) {
     if(value === true){
       $(el).removeClass("hero");
@@ -53,11 +56,9 @@ $(function() {
     var seconds = time - (minutes * 60);
 	  return pad(minutes, 2) + ":" + pad(seconds, 2);
   };
-  combatInfo.currentCharacter = characters[0];
-  Rivets.bind($("#combatLogheader"), {combatInfo: combatInfo});
-  combatView = Rivets.bind($('.combatParticipant'), {characters: characters});
-  sizes = Rivets.bind($(".sizeList option"), {sizes: sizes});
-  ActivateEditable();
+
+  dbHandler.PopulateAvailableCharacters(Setup);
+  
   //Set the default selected to be the 4th value (Medium);
   $("#sizeSelectList").val(4);
   $('#characterTypeCheckbox').bootstrapToggle({
@@ -120,6 +121,7 @@ $(function() {
     processForm($(this), e);
   });
 });
+
 function HidePopups(e){
   if($(e.target).closest('.popupWrapper').length) {
   }
@@ -191,6 +193,15 @@ function NewCharUpdate(fieldToUpdate, updateFrom, useBaseTen = true){
   }
   $(fieldToUpdate).text(total);
 }
+function CreateAvailableCharacterSearchList(availableCharacters){
+  var availableCharactersListOptions = {
+    valueNames: ['name']
+  }
+  var availableCharacterNames = availableCharacters.map(function(a) {return {name: [a.name]};});
+  var availableCharacterList = new ListJS('availableCharacters', availableCharactersListOptions, []);
+  availableCharacterList.clear();
+  availableCharacterList.add(availableCharacterNames);
+}
 function pad(num, size) {
     var s = "000000000" + num;
     return s.substr(s.length-size);
@@ -259,6 +270,17 @@ Array.prototype.move = function (old_index, new_index) {
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     return this; // for testing purposes
 };
+//Editable success handler
+$.fn.editable.defaults.send = 'never';
+$.fn.editable.defaults.url = function(response, newValue){
+  return null;
+}
+$.fn.editable.defaults.success = function(response, newValue){
+  var valueToChange = $(this).attr("charactervalue");
+  var index = GetCharacterIndex($(this));
+  characters[index][valueToChange] = newValue;
+  ActivateEditable();
+}
 function processForm(form, e) {
     if (e.preventDefault) e.preventDefault();
     var values = form.serializeArray();
@@ -268,10 +290,9 @@ function processForm(form, e) {
       console.log(field.name +" = "+ field.value);
       result[this.name] = this.value;
     });
-    console.log();
-    var character = new Classes.Character.Character(
+    var character = new Classes.Character(
       result["name"],
-      true,
+      result["isEnemy"] == 'on' ? true : false,
       result["sizeIndex"],
       result["initiative"],
       result["armorBonus"],
