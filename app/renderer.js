@@ -56,19 +56,32 @@ $(function() {
     var seconds = time - (minutes * 60);
 	  return pad(minutes, 2) + ":" + pad(seconds, 2);
   };
+  LoadModule($("#AddCharacterWrapper"),"modules/AddCharacter.html", function(){
+    LoadModule($("#AddCharacterWrapper .primaryStats"), "modules/PrimaryStats.html", function(){
+      BindHiddenStats($("#AddCharacterWrapper"));
+    });
+  });
+  
+  $(".primaryStats").each(function(i, obj){
+    LoadModule($(this),"modules/PrimaryStats.html", null);
+  });
+  LoadModule($("#CreateCharacterWrapper"),"modules/CreateCharacter.html", function(){
+    //Set the default selected to be the 4th value (Medium);
+    $("#sizeSelectList").val(4);
+    $('#characterTypeCheckbox').bootstrapToggle({
+        on: 'Enemy',
+        off: 'Hero'
+    });
+  });
 
   dbHandler.PopulateAvailableCharacters(Setup);
-  
-  //Set the default selected to be the 4th value (Medium);
-  $("#sizeSelectList").val(4);
-  $('#characterTypeCheckbox').bootstrapToggle({
-      on: 'Enemy',
-      off: 'Hero'
-  });
   
   $(document).bind('click', function(e) {
     HidePopups(e); 
   });
+  $("#availableCharacters").click(function(e){
+    ShowPopup($("#availableCharacters > .list"), e)
+  })
   $("#combatLog").on("click", ".removeHP span", function(){
     AddHP(GetCharacterIndex($(this)), $(this).text());
   });
@@ -85,30 +98,37 @@ $(function() {
     EndTurn();
   });
   $("#btnCreateCharacter").click(function(e){
-    ShowCharacterCreation(e);
+    ShowPopup($('#CreateCharacterFormWrapper'),e);
   });
-  $("#addCharacter").on("change", "#dexterityInput input", function(){
+  $("#CreateCharacterWrapper").on("change", "#dexterityInput input", function(){
     NewCharDEXUpdate($(this).val());
   });
-  $("#addCharacter").on("change", "#strengthInput input", function(){
+  $("#CreateCharacterWrapper").on("change", "#strengthInput input", function(){
     NewCharSTRUpdate($(this).val());
   });
-  $("#addCharacter").on("change", "#baseAttackInput input", function(){
+  $("#CreateCharacterWrapper").on("change", "#baseAttackInput input", function(){
     NewCharBABUpdate($(this).val());
   });
-  $("#addCharacter").on("change", ".sizeList", function(){
+  $("#CreateCharacterWrapper").on("change", ".sizeList", function(){
     NewCharacterSizeUpdate($("option:selected", this).attr("sizeMod"));
   });
-  $("#addCharacter").on("change", ".ACContributor", function(){
+  $("#CreateCharacterWrapper").on("change", ".ACContributor", function(){
     NewCharUpdate("#ACTotal", ".ACContributor");
   });
-  $("#addCharacter").on("change", ".CMBContributor", function(){
+  $("#CreateCharacterWrapper").on("change", ".CMBContributor", function(){
     NewCharUpdate("#CMBTotal", ".CMBContributor", false);
   });
-  $("#addCharacter").on("change", ".CMDContributor", function(){
+  $("#CreateCharacterWrapper").on("change", ".CMDContributor", function(){
     NewCharUpdate("#CMDTotal", ".CMDContributor");
   });
-  $("#combatLog").on({
+  BindHiddenStats($("#combatLog"));
+  $('#CreateCharacter').on("submit",function(e) {
+    e.preventDefault(); 
+    processForm($(this), e);
+  });
+});
+function BindHiddenStats(element){
+  element.on({
       mouseenter: function () {
         $(this).children('.hiddenStat').stop().fadeIn(100);
       },
@@ -116,12 +136,10 @@ $(function() {
         $(this).children('.hiddenStat').stop().fadeOut(100);
       }
   }, ".hoverable");
-  $('#addCharacter').on("submit",function(e) {
-    e.preventDefault(); 
-    processForm($(this), e);
-  });
-});
-
+}
+function LoadModule(element, modulePath, callback){
+  element.load(modulePath, callback);
+}
 function HidePopups(e){
   if($(e.target).closest('.popupWrapper').length) {
   }
@@ -129,8 +147,9 @@ function HidePopups(e){
     $(".popupWrapper").hide();
   }
 }
-function ShowCharacterCreation(e){
-  $('#addCharacterFormWrapper').show();
+function ShowPopup(element,e){
+  HidePopups(e);
+  element.show();
   e.stopPropagation();
 }
 function ActivateEditable(){
@@ -195,9 +214,10 @@ function NewCharUpdate(fieldToUpdate, updateFrom, useBaseTen = true){
 }
 function CreateAvailableCharacterSearchList(availableCharacters){
   var availableCharactersListOptions = {
-    valueNames: ['name']
+    valueNames: ['name', {name: 'characterIndex', attr: 'charIndex'}]
   }
-  var availableCharacterNames = availableCharacters.map(function(a) {return {name: [a.name]};});
+  var availableCharacterNames = availableCharacters.map(function(a) {return {name: a.name, characterIndex: availableCharacters.indexOf(a)};});
+  console.log(availableCharacterNames);
   var availableCharacterList = new ListJS('availableCharacters', availableCharactersListOptions, []);
   availableCharacterList.clear();
   availableCharacterList.add(availableCharacterNames);

@@ -120,49 +120,64 @@ textarea {
     width: 43em;
     margin: 2em auto;
 }
-#addCharacterWrapper{
+.popupSection{
+    width:43em;
     position: absolute;
     z-index: 100;
     padding:1em;
-    width:43em;
     pointer-events:none;
 }
-#addCharacterWrapper *{
+#AddCharacterFormWrapper{
+    background-color: white;
+    width:25em;
+    margin:auto;
+    padding:1em;
+    height:10em;
+}
+#AddCharacterFormWrapper .participantHeader {
+    margin: auto;
+    height:3.5em;
+}
+#AddCharacterFormWrapper .participantHeader h2{
+    margin-top:0.5em;
+    color:#FFF;
+}
+#CreateCharacterWrapper *{
     pointer-events:all;
 }
 .popupWrapper{
+    margin:auto;
     display: none;
 }
-#addCharacterFormWrapper{
+#CreateCharacterFormWrapper{
     background-color:#FFF;
     box-shadow: 0px 2px 5px #000000;
     width:30em;
-    margin:auto;
 }
-#addCharacter{
+#CreateCharacter{
     width:25em;
     padding:2em;
     margin: auto;
 }
-#addCharacter input{
+#CreateCharacter input{
     width:8em;
 }
-#addCharacter input[type=number]{
+#CreateCharacter input[type=number]{
     width:3em;
 }
-#addCharacter .inlineBlock span{
+#CreateCharacter .inlineBlock span{
     display: block;
     text-align: center;
 }
-#addCharacter label#addHeroType{
+#CreateCharacter label#addHeroType{
     margin-bottom:.4em;
 }
-#addCharacter .toggle{
+#CreateCharacter .toggle{
     height: 1.8em!important;
     margin-top: -.2em;
     min-height: 0;
 }
-#addCharacter .toggle label{
+#CreateCharacter .toggle label{
     padding-top:.2em;
 }
 .toggle-group .toggle-off, .toggle-group .toggle-off:active, .toggle-group .toggle-off:hover{

@@ -9,9 +9,9 @@ class Character{
         this.initiativeOrder = 0;
         this.armorBonus = parseInt(armorBonus);
         this.miscACBonus = parseInt(miscACBonus);
-        this.AC = 10 + parseInt(armorBonus) + parseInt(miscACBonus) + this.CalculateStatBonus(dexterity) + (size[this.sizeIndex].sizeMod * -1);
+        this.AC = 10 + parseInt(armorBonus) + parseInt(miscACBonus) + Character.CalculateStatBonus(dexterity) + (size[this.sizeIndex].sizeMod * -1);
         this.ACTouch = this.AC - parseInt(armorBonus);
-        this.ACFlatFoot = this.AC - this.CalculateStatBonus(dexterity);
+        this.ACFlatFoot = this.AC - Character.CalculateStatBonus(dexterity);
         this.maxHP = parseInt(maxHP);
         this.currentHP = this.maxHP;
         this.saveReflex = parseInt(saveReflex);
@@ -24,14 +24,14 @@ class Character{
         this.intelligence = parseInt(intelligence);
         this.wisdom = parseInt(wisdom);
         this.charisma = parseInt(charisma);
-        this.CMB = parseInt(baseAttack) + this.CalculateStatBonus(strength) + size[this.sizeIndex].sizeMod + parseInt(miscCMBBonus);
-        this.CMD = 10 + parseInt(baseAttack) +  this.CalculateStatBonus(strength) + this.CalculateStatBonus(dexterity) + size[this.sizeIndex].sizeMod + parseInt(miscCMDBonus);
+        this.CMB = parseInt(baseAttack) + Character.CalculateStatBonus(strength) + size[this.sizeIndex].sizeMod + parseInt(miscCMBBonus);
+        this.CMD = 10 + parseInt(baseAttack) +  Character.CalculateStatBonus(strength) + Character.CalculateStatBonus(dexterity) + size[this.sizeIndex].sizeMod + parseInt(miscCMDBonus);
         this.baseAttack = parseInt(baseAttack);
         this.meleeWeapons = meleeWeapons;
         this.rangedWeapons = rangedWeapons;
         this.statusEffects = statusEffects;
     }
-    CalculateStatBonus(statScore){
+    static CalculateStatBonus(statScore){
         return Math.floor((parseInt(statScore) - 10) / 2);
     }
 }
