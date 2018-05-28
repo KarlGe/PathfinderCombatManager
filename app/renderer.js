@@ -2,7 +2,8 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 "use strict"
-
+var Datastore = require('nedb')
+  , db = {};
 var Classes = require("./classes");
 var Rivets = require("rivets");
 var ListJS = require("list.js");
@@ -72,6 +73,10 @@ $(function() {
         on: 'Enemy',
         off: 'Hero'
     });
+    $('#CreateCharacter').on("submit",function(e) {
+      e.preventDefault(); 
+      processForm($(this), e);
+    });
   });
 
   dbHandler.PopulateAvailableCharacters(Setup);
@@ -122,10 +127,6 @@ $(function() {
     NewCharUpdate("#CMDTotal", ".CMDContributor");
   });
   BindHiddenStats($("#combatLog"));
-  $('#CreateCharacter').on("submit",function(e) {
-    e.preventDefault(); 
-    processForm($(this), e);
-  });
 });
 function BindHiddenStats(element){
   element.on({
@@ -227,15 +228,15 @@ function pad(num, size) {
     return s.substr(s.length-size);
 }
 function MoveCharacterUp(element){
-  index = GetCharacterIndex(element);
-  newIndex = ShiftIndex(index, -1);
+  var index = GetCharacterIndex(element);
+  var newIndex = ShiftIndex(index, -1);
   characters.move(index, newIndex);
   ActivateEditable();
   ResetInitiativeOrder();
 }
 function MoveCharacterDown(element){
-  index = GetCharacterIndex(element);
-  newIndex = ShiftIndex(index, +1);
+  var index = GetCharacterIndex(element);
+  var newIndex = ShiftIndex(index, +1);
   characters.move(index, newIndex);
   ActivateEditable();
   ResetInitiativeOrder();
@@ -254,7 +255,7 @@ function ShiftCharacters(){
   characters.move(0, characters.length-1);
 }
 function ResetInitiativeOrder(){
-  for(i = 0; i < characters.length; i++){
+  for(var i = 0; i < characters.length; i++){
     characters[i].initiativeOrder = i +1;
   }
 }
@@ -265,7 +266,7 @@ function GetCharacterIndex(element){
   return parseInt(element.closest('.combatParticipant').attr("characterIndex"));
 }
 function ShiftIndex(index, shiftAmount){
-  newIndex = parseInt(index) + parseInt(shiftAmount);
+  var newIndex = parseInt(index) + parseInt(shiftAmount);
   if(newIndex < 0){
     newIndex = characters.length - 1;
   }
@@ -333,6 +334,7 @@ function processForm(form, e) {
       result["miscCMDBonus"]
     );
     characters.push(character);
+
     /*var character = new Classes.Character.Character("Renestrae",false,4,4,5,2,35,5,4,2,30,10,16,12,10,11,14,4,0,0)
     character.initiativeRoll = 20;
     character.initiativeOrder = 1;
