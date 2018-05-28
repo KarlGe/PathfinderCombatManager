@@ -1,40 +1,42 @@
-# electron-quick-start
+# Roomcheck manager
 
-**Clone and run for a quick way to see Electron in action.**
+An electron app to manage a combat scenario in the Pathfinder RPG
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start) within the Electron documentation.
+## Getting Started
 
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
+These instructions will get you a copy of the project up and running on your local machine for development and testing purpose.
 
-A basic Electron application needs just these files:
+### Prerequisites
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+```
+Node
+NPM
+```
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start).
+### Installing
 
-## To Use
-
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+To clone and run this repository you'll need [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
 # Clone this repository
-git clone https://github.com/electron/electron-quick-start
+git clone https://github.com/KarlGe/PathfinderCombatManager.git
 # Go into the repository
-cd electron-quick-start
+cd PathfinderCombatManager
 # Install dependencies
 npm install
 # Run the app
 npm start
 ```
 
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/).
+## Built With
 
-## Other Example Apps
+* PHP
+* jQuery
+* [Electron](https://electronjs.org/) - Cross platform desktop application framework
+* [NeDB](https://github.com/louischatriot/nedb) - Embedded persistent or in memory database for Node.js
+* [Rivets.js](http://rivetsjs.com/) - Data binding and templating
+* [X-editable.js](https://vitalets.github.io/x-editable/) - In-place editing with Bootstrap
 
-For more example apps, see the
-[list of boilerplates](http://electron.atom.io/community/#boilerplates)
-created by the awesome electron community.
+## Authors
 
-#### License [CC0 1.0 (Public Domain)](LICENSE.md)
+* **Karl Gustav Georgsen** 
