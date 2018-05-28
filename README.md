@@ -1,4 +1,4 @@
-# Roomcheck manager
+# Pathfinder Combat Manager
 
 An electron app to manage a combat scenario in the Pathfinder RPG
 
